@@ -1,0 +1,4 @@
+#Thu Sep 02 21:24:38 GST 2021
+base.0=/Users/arshdeepsingh/Documents/Current Projects/Projects/Flutter/testDemo/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
