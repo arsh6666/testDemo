@@ -16,11 +16,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(BaseController());
+    var dio = Dio();
+    Get.put(dio,permanent: true);
+    Get.lazyPut<PassionController>(() => PassionController());
+
     return GetMaterialApp(
       initialBinding: BindingsBuilder((){
-        var dio = Dio();
-        Get.put(dio,permanent: true);
-        Get.lazyPut<PassionController>(() => PassionController());
+
+
       }),
       home: Passion(),
       initialRoute: "/",

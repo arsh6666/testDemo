@@ -1,13 +1,21 @@
+//import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:adobe_xd/pinned.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_scatter/flutter_scatter.dart';
 import 'package:get/get.dart';
+import 'package:testproject/controller/PassionController.dart';
 import 'package:testproject/routes/AppRouterConstant.dart';
+import 'package:testproject/utils/AppApi.dart';
 
-class Passion extends StatelessWidget {
+class Passion extends GetView<PassionController> {
+
+
   Passion({
     Key? key,
-  }) : super(key: key);
+  }) : super(key: key){
+    controller.getPassionMethod();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,17 +74,66 @@ class Passion extends StatelessWidget {
                     TextHeightBehavior(applyHeightToFirstAscent: false),
                 textAlign: TextAlign.center,
               ),
-              Expanded(child: Container()),
+              Obx((){
+                var interestList = controller.interestList.value;
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: FittedBox(
+                      child: Scatter(
+                        fillGaps: true,
+                        delegate: ArchimedeanSpiralScatterDelegate(
+                            ratio: 0.2, a: 5, b: 5),
+                        children: interestList.map((e) {
+                          return Container(
+                              width: interestList.indexOf(e).isEven ? 90 : 118,
+                              height: interestList.indexOf(e).isEven ? 90 : 118,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                 ),
+                              child: Stack(children: [
+                                CachedNetworkImage(
+                                  imageUrl: AppApi.imageBaseURL+e.image!,
+                                  imageBuilder: (context, imageProvider) => Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover),
+                                    ),
+                                  ),
+                                  placeholder: (context, url) => CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) => Icon(Icons.error),
+                                ),
+                                Center(
+                                    child: Text(
+                                  e.name!.toUpperCase(),
+                                      textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white,
+
+                                  ),
+                                ))
+                              ]));
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+                );
+              }
+              ),
+              Spacer(),
               Padding(
-                padding: const EdgeInsets.only(left: 50,top: 20,right: 50,bottom: 50),
+                padding: const EdgeInsets.only(
+                    left: 50, top: 5, right: 50, bottom: 25),
                 child: GestureDetector(
-                  onTap: (){
-Get.toNamed(AppRouterConstant.Profile);
+                  onTap: () {
+                    Get.toNamed(AppRouterConstant.Profile);
                   },
                   child: Container(
                     height: 50,
                     decoration: new BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
+                        borderRadius: BorderRadius.circular(10.0),
                         gradient: new LinearGradient(
                           colors: [
                             Color.fromRGBO(75, 111, 255, 1),
@@ -87,9 +144,7 @@ Get.toNamed(AppRouterConstant.Profile);
                     child: Center(
                       child: Text(
                         "Continue",
-                        style: TextStyle(
-                          color: Colors.white
-                        ),
+                        style: TextStyle(color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -103,8 +158,3 @@ Get.toNamed(AppRouterConstant.Profile);
     );
   }
 }
-
-const String _svg_g83iq0 =
-    '<svg viewBox="46.5 599.5 321.0 1.0" ><path transform="translate(46.5, 599.5)" d="M 0 0 L 321 0" fill="none" fill-opacity="0.25" stroke="#e3e3e3" stroke-width="1" stroke-opacity="0.25" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
-const String _svg_ah78d =
-    '<svg viewBox="64.5 599.5 69.0 1.0" ><path transform="translate(64.5, 599.5)" d="M 0 0 L 69 0" fill="none" stroke="#ffffff" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
